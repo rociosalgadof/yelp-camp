@@ -1,0 +1,27 @@
+<%layout("layouts/boilerplate")-%>
+<body>
+    <h1>All Campgrounds</h1>
+  <form action="/campgrounds/new">
+    <button>Add New Campground</button>
+  </form>
+  <%for(let camp of campgrounds){%>
+  <div class="card mb-4">
+    <div class="row">
+      <div class="col-md-4">
+            <img class="img-fluid" src="<%=camp.image%>" alt="" />
+      </div>
+      <div class="col-md-8">
+          <div class="card-body">
+                <h5 class="card-title"><%=camp.title%></h3>
+                <p class="card-text"><%=camp.description%></p>
+                <p class="card-text"><Small class="muted"><%=camp.location%></Small></p>
+                <form action="/campgrounds/<%=camp._id%>">
+                <button class="btn btn-primary">View <%=camp.title%></button>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+  <%}%>
+
+</body>

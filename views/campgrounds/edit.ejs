@@ -1,0 +1,10 @@
+<%layout("layouts/boilerplate")-%>
+<body>
+    <h1>Edit Camp:</h1>
+    <form action="/campgrounds/<%=camp._id%>?_method=PATCH" method="post">
+        <input type="text" id="title" name="title" value="<%=camp.title%>">
+        <input type="text" id="location" name="location" value="<%=camp.location%>">
+        <button>Submitt</button>
+    </form>
+    <a href="/campgrounds">Cancel</a>
+</body>
