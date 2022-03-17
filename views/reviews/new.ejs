@@ -1,0 +1,51 @@
+<%layout("layouts/boilerplate")-%>
+<body>
+  <div class="row">
+    <h1 class="text-center"><%=camp.title%></h1>
+    <div class="col-6 offset-3">
+      <form
+        action="/campgrounds/<%=camp._id%>/reviews"
+        method="post"
+        class="needs-validation"
+        novalidate
+      >
+        <div class="mb-3">
+          <label for="body" class="form-label">Your Review:</label>
+          <textarea
+            name="body"
+            id="body"
+            cols="20"
+            rows="5"
+            required
+            class="form-control"
+          ></textarea>
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Please enter a review.</div>
+        </div>
+        <div class="mb-3">
+          <label for="rating" class="form-label">Rating:</label>
+          <div class="input-group">
+            <span class="input-group-text" id="rating-label">&#9733;</span>
+            <input
+              required
+              name="rating"
+              type="number"
+              class="form-control"
+              aria-label="rating"
+              aria-describedby="rating-label"
+              placeholder="0"
+              min="1"
+              max="5"
+            />
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please enter a valid rating.</div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <button class="btn btn-success">Submitt</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <a href="/campgrounds">Cancel</a>
+</body>
