@@ -1,36 +1,75 @@
 <%layout("layouts/boilerplate")-%>
-<body>
+
   <div class="row">
     <h1 class="text-center">Add New Camp:</h1>
     <div class="col-6 offset-3">
-      <form action="/campgrounds" method="post">
+      <form action="/campgrounds" method="post" class="needs-validation" novalidate>
         <div class="mb-3">
           <label for="title" class="form-label">Name of Camp:</label>
-          <input type="text" id="title" name="title" class="form-control" />
+          <input required type="text" id="title" name="title" class="form-control" />
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please enter a name.
+          </div>
         </div>
         <div class="mb-3">
           <label for="location" class="form-label">Location:</label>
           <input
+          required
             type="text"
             id="location"
             name="location"
             class="form-control"
           />
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please enter a location.
+          </div>
         </div>
         <div class="mb-3">
             <label for="price" class="form-label">Campground Price:</label>
-            <div class="input-group>
+            <div class="input-group">
                 <span class="input-group-text" id="price-label">$</span>
-                <input type="text" class="form-control" placeholder="0.00" aria-label="price" aria-describedby="price-label">
+                <input
+                required
+                name="price"
+                type="number"
+                class="form-control"
+                aria-label="price"
+                aria-describedby="price-label"
+                placeholder="0.00"
+              />
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+                <div class="invalid-feedback">
+                  Please enter a price.
+                </div>
               </div>
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Image URL:</label>
-            <input type="text" id="image" name="image" class="form-control" />
+            <input required type="text" id="image" name="image" class="form-control" />
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            <div class="invalid-feedback">
+              Please enter an image URL.
+            </div>
           </div>
         <div class="mb-3">
           <label for="description" class="form-label">Description:</label>
-          <textarea type="text" id="description" name="description" class="form-control" /></textarea>
+          <textarea required type="text" id="description" name="description" class="form-control" /></textarea>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please enter a description.
+          </div>
         </div>
         <div class="mb-3">
           <button class="btn btn-success">Submitt</button>
@@ -39,4 +78,4 @@
     </div>
   </div>
   <a href="/campgrounds">Cancel</a>
-</body>
+
