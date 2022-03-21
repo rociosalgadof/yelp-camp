@@ -6,19 +6,11 @@ const Review = require("../models/review");
 const Campground = require("../models/campground");
 const ExpressError = require("../utils/ExpressError");
 const catchAsync = require("../utils/catchAsync");
-
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
+const { validateReview, isReviewAuthor, isLoggedIn } = require("../middleware");
 
 router.get(
   "/new",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const { idCamp } = req.params;
     const camp = await Campground.findById(idCamp);
@@ -28,6 +20,7 @@ router.get(
 
 router.post(
   "/",
+  isLoggedIn,
   validateReview,
   catchAsync(async (req, res, next) => {
     if (!req.body) throw new ExpressError("Invalid Review Data", 400);
@@ -37,6 +30,7 @@ router.post(
     const camp = await Campground.findById(idCamp);
     const review = new Review({ body, rating });
     camp.reviews.push(review);
+    review.author = req.user._id;
     await camp.save();
     await review.save();
     res.redirect(`/campgrounds/${idCamp}`);
@@ -45,6 +39,7 @@ router.post(
 
 router.delete(
   "/:id_review",
+  isReviewAuthor,
   catchAsync(async (req, res) => {
     const ids = req.params;
     const camp = await Campground.findByIdAndUpdate(ids.idCamp, {
