@@ -1,4 +1,5 @@
 <%layout("layouts/boilerplate")-%>
+<link rel="stylesheet" href="/stylesheets/stars.css">
   <div class="row">
     <div class="col-6 offset-3">
       <div class="card mb-5" style="width: 18rem">
@@ -47,13 +48,9 @@
         <div class="card mb-3">
           <div class="card-body">
               <%for(let review of foundCamp.reviews){%>
-              <p>
-                <%for(let i=1; i<=review.rating; i++){%>
-                  &#9733;
-                  <%}%>
-               </p>
-               <p class="card-text">"<%=review.body%>"<span>by <%=review.author.username%></span></p>
-               
+                <p><%=review.author.username%></p>
+               <p class="starability-result" data-rating="<%=review.rating%>">Rated:<%=review.rating%> stars</p>
+               <p class="card-text">"<%=review.body%>"</p>
                <%if(currentUser && foundCamp.author.equals(currentUser._id)){%>
               <form action="/campgrounds/<%=foundCamp._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
               <button class="btn-danger btn-sm">Delete Review</button>
