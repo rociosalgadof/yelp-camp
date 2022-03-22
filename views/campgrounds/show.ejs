@@ -1,0 +1,14 @@
+<%layout("layouts/boilerplate")-%>
+<body>
+    <h1><%=foundCamp.title%></h1>
+    <h2><%=foundCamp.location%></h2>
+    <img src="<%=foundCamp.image%>" alt="">
+    <p><%=foundCamp.description%></p>
+    <form action="/campgrounds/edit/<%=foundCamp._id%>">
+        <button>Edit camp</button>
+    </form>
+    <a href="/campgrounds">Back to All Camps</a>
+    <form action="/campgrounds/<%=foundCamp._id%>?_method=DELETE" method="post">
+    <button>Delete Camp</button>
+</form>
+</body>
