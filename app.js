@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -9,13 +12,16 @@ const methodOverride = require("method-override");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
-
+const mongoSanitize = require("express-mongo-sanitize");
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
 const usersRoutes = require("./routes/users");
+const MongoDBStore = require("connect-mongo")(session);
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
+const secret = process.env.SECRET || "asecret";
 
 mongoose
-  .connect("mongodb://localhost:27017/yelp-camp", {
+  .connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -29,6 +35,16 @@ mongoose
 
 const app = express();
 
+const store = new MongoDBStore({
+  url: dbUrl,
+  secret,
+  touchAfter: 24 * 60 * 60,
+});
+
+store.on("error", function (e) {
+  console.log("SESSION STORE ERROR", e);
+});
+
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
@@ -38,7 +54,9 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
 const sessionConfig = {
-  secret: "thisisasecret",
+  store,
+  name: "session",
+  secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -66,12 +84,18 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(
+  mongoSanitize({
+    replaceWith: "_",
+  })
+);
+
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:idCamp/reviews", reviewRoutes);
 app.use("/", usersRoutes);
 
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("campgrounds/home");
 });
 
 app.all("*", (req, res, next) => {
@@ -84,6 +108,8 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error", { err });
 });
 
-app.listen(3000, () => {
-  console.log("Listening from port 3000!");
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Listening from port ${port}!`);
 });

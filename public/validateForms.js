@@ -1,5 +1,6 @@
 (function () {
   "use strict";
+  bsCustomFileInput.init();
   const forms = document.querySelectorAll(".needs-validation");
   Array.prototype.slice.call(forms).forEach(function (form) {
     form.addEventListener(
